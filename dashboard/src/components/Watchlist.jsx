@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import axios from "axios";
 import {
     BarChartOutlined,
     KeyboardArrowDown,
@@ -8,9 +9,15 @@ import {
 
   import { Tooltip, Grow } from "@mui/material";
 
-import {watchlist} from "../data/data";
-
 export default function Watchlist(){
+
+  let [watchlist,setWatchlist]=useState([]);
+
+  useEffect(()=>{
+    axios.get("http://localhost:3000/allWatchlist").then((res)=>{
+      setWatchlist(res.data);
+    })
+  })
   
     return(
         <div className="watchlist-container">
@@ -65,7 +72,7 @@ const WatchListItem=({stock})=>{
 
 const WatchListActions=({uid})=>{
  return(
-  <span className="actions">
+  <span key={uid} className="actions">
    <span className="chiled-span">
    <Tooltip
           title="Buy (B)"
